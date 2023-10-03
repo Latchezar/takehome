@@ -1,10 +1,8 @@
 package com.example.takehome.exceptions;
 
-import lombok.Builder;
 import lombok.Getter;
 
 @Getter
-@Builder
 public class ServiceException extends RuntimeException {
 
     private final ErrorCode error;

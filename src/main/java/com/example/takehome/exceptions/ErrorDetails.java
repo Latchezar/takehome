@@ -17,9 +17,6 @@ public class ErrorDetails {
     private String description;
     private List<String> errors;
 
-    private List<String> additionalInformation;
-    private Object payload;
-
     public ErrorDetails() {
     }
 

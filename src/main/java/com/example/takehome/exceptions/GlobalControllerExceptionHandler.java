@@ -119,12 +119,6 @@ public class GlobalControllerExceptionHandler {
         if (e.getLocalizedMessage().isBlank()) {
             errorDetails.setDescription(e.getLocalizedMessage());
         }
-        if (e.getMessages() != null && !e.getMessages().isEmpty()) {
-            errorDetails.setErrors(e.getMessages());
-        }
-        if (e.getPayload() != null) {
-            errorDetails.setPayload(e.getPayload());
-        }
 
         return errorDetails;
     }
