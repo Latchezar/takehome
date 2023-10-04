@@ -14,6 +14,7 @@ import com.example.takehome.repository.UserRepository;
 import com.example.takehome.rest.dto.BookingDto;
 import com.example.takehome.rest.dto.CreateBookingRequest;
 import com.example.takehome.service.BookingService;
+import com.example.takehome.service.async.BookingAsyncService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -27,6 +28,7 @@ public class BookingServiceImpl implements BookingService {
     private final BookingRepository bookingRepository;
     private final HotelRepository hotelRepository;
     private final UserRepository userRepository;
+    private final BookingAsyncService bookingAsyncService;
 
     @Override
     public BookingDto createBooking(CreateBookingRequest createBookingRequest,
@@ -42,7 +44,7 @@ public class BookingServiceImpl implements BookingService {
         TakehomeUser user = userRepository.findById(securityUser.getId())
                                           .orElseThrow(() -> new ServiceException(ErrorCode.USER_NOT_FOUND));
 
-        Booking booking = Booking.builder()
+        Booking booking = bookingRepository.save(Booking.builder()
                                  .occupants(createBookingRequest.getOccupants())
                                  .status(BookingStatus.NEW)
                                  .hotel(hotel)
@@ -50,8 +52,9 @@ public class BookingServiceImpl implements BookingService {
                                  .bookedBy(user)
                                  .checkingDate(createBookingRequest.getCheckinDate())
                                  .checkoutDate(createBookingRequest.getCheckoutDate())
-                                 .build();
-        return new BookingDto(bookingRepository.save(booking));
+                                 .build());
+        bookingAsyncService.processBookingAfterInitialSave(booking);
+        return new BookingDto(booking);
     }
 
     @Override
