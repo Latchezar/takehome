@@ -58,7 +58,7 @@ public class Booking {
     private TakehomeUser bookedBy;
 
     @Column(name = "checkin_date")
-    private LocalDateTime checkingDate;
+    private LocalDateTime checkinDate;
 
     @Column(name = "checkout_date")
     private LocalDateTime checkoutDate;

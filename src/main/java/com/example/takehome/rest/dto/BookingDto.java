@@ -2,7 +2,6 @@ package com.example.takehome.rest.dto;
 
 import com.example.takehome.common.BookingStatus;
 import com.example.takehome.model.Booking;
-import com.example.takehome.model.TakehomeUser;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -17,7 +16,7 @@ public class BookingDto {
     private Long hotelId;
     private Long roomId;
     private Long bookedBy;
-    private LocalDateTime checkingDate;
+    private LocalDateTime checkinDate;
     private LocalDateTime checkoutDate;
     private LocalDateTime createdAt;
 
@@ -28,7 +27,7 @@ public class BookingDto {
         this.hotelId = booking.getHotel().getId();
         this.roomId = booking.getRoom().getId();
         this.bookedBy = booking.getBookedBy().getId();
-        this.checkingDate = booking.getCheckingDate();
+        this.checkinDate = booking.getCheckinDate();
         this.checkoutDate = booking.getCheckoutDate();
         this.createdAt = booking.getCreatedAt();
     }

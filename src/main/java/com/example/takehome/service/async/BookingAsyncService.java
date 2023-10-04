@@ -26,14 +26,14 @@ public class BookingAsyncService {
     public void processBookingAfterInitialSave(Booking booking) {
         log.info("Processing Booking after save...");
         Map<Long, Map<Long, Map<LocalDate, Integer>>> availability = availabilityClient
-                .getHotelAvailability(booking.getCheckingDate().toLocalDate(), booking.getCheckoutDate().toLocalDate(), booking.getHotel().getId());
+                .getHotelAvailability(booking.getCheckinDate().toLocalDate(), booking.getCheckoutDate().toLocalDate(), booking.getHotel().getId());
 
         BookingStatus status = BookingStatus.REJECTED;
         if (isRoomAvailable(availability, booking.getHotel().getId(), booking.getRoom().getId())) {
             status = BookingStatus.CONFIRMED;
             try {
                 availabilityClient.updateRoomAvailabilityAfterBooking(booking.getHotel().getId(), booking.getRoom().getId(),
-                                                                      booking.getCheckingDate().toLocalDate(), booking.getCheckoutDate().toLocalDate());
+                                                                      booking.getCheckinDate().toLocalDate(), booking.getCheckoutDate().toLocalDate());
             } catch (Exception e) {
                 log.error(e.getMessage());
                 status = BookingStatus.REJECTED;

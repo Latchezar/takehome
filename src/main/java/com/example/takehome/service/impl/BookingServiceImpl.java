@@ -50,7 +50,7 @@ public class BookingServiceImpl implements BookingService {
                                  .hotel(hotel)
                                  .room(room)
                                  .bookedBy(user)
-                                 .checkingDate(createBookingRequest.getCheckinDate())
+                                 .checkinDate(createBookingRequest.getCheckinDate())
                                  .checkoutDate(createBookingRequest.getCheckoutDate())
                                  .build());
         bookingAsyncService.processBookingAfterInitialSave(booking);

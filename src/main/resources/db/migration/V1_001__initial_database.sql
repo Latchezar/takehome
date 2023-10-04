@@ -24,7 +24,11 @@ CREATE TABLE user_authorities (
 
 INSERT
 INTO users (id, username, password, created_at, last_updated)
-VALUES (1, 'Latcho', '$2a$10$7tK423njgYWpPgflMVBQIeQAAmhYdYx/F.LbDO8IAwvuC7gS11Vb2', now(), now());
+VALUES (1, 'Admin', '$2a$10$7tK423njgYWpPgflMVBQIeQAAmhYdYx/F.LbDO8IAwvuC7gS11Vb2', now(), now());
+
+INSERT
+INTO users (id, username, password, created_at, last_updated)
+VALUES (2, 'Regular', '$2a$10$7tK423njgYWpPgflMVBQIeQAAmhYdYx/F.LbDO8IAwvuC7gS11Vb2', now(), now());
 
 INSERT
 INTO authorities (id, name, created_at, last_updated)
@@ -79,13 +83,4 @@ CREATE TABLE bookings (
         FOREIGN KEY (hotel_id) REFERENCES hotels(id),
     CONSTRAINT user_booking_fk
         FOREIGN KEY (user_id) REFERENCES users(id)
-)
-
--- CREATE TABLE room_availability (
---     id           bigint AUTO_INCREMENT PRIMARY KEY,
---     on_date      timestamp NOT NULL,
---     room_id      bigint    NOT NULL,
---     availability int       NOT NULL,
---     CONSTRAINT room_availability_fk
---         FOREIGN KEY (room_id) REFERENCES rooms(id)
--- );
+);

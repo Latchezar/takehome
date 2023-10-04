@@ -1,6 +1,5 @@
 package com.example.takehome.service.impl;
 
-import com.example.takehome.config.security.SecurityUser;
 import com.example.takehome.exceptions.ErrorCode;
 import com.example.takehome.exceptions.ServiceException;
 import com.example.takehome.model.Hotel;
