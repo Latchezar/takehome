@@ -45,14 +45,14 @@ public class BookingServiceImpl implements BookingService {
                                           .orElseThrow(() -> new ServiceException(ErrorCode.USER_NOT_FOUND));
 
         Booking booking = bookingRepository.save(Booking.builder()
-                                 .occupants(createBookingRequest.getOccupants())
-                                 .status(BookingStatus.NEW)
-                                 .hotel(hotel)
-                                 .room(room)
-                                 .bookedBy(user)
-                                 .checkinDate(createBookingRequest.getCheckinDate())
-                                 .checkoutDate(createBookingRequest.getCheckoutDate())
-                                 .build());
+                                                        .occupants(createBookingRequest.getOccupants())
+                                                        .status(BookingStatus.NEW)
+                                                        .hotel(hotel)
+                                                        .room(room)
+                                                        .bookedBy(user)
+                                                        .checkinDate(createBookingRequest.getCheckinDate())
+                                                        .checkoutDate(createBookingRequest.getCheckoutDate())
+                                                        .build());
         bookingAsyncService.processBookingAfterInitialSave(booking);
         return new BookingDto(booking);
     }
@@ -60,7 +60,7 @@ public class BookingServiceImpl implements BookingService {
     @Override
     public List<BookingDto> getUserBookings(SecurityUser securityUser) {
         return bookingRepository.findAllByUserId(securityUser.getId())
-                .stream().map(BookingDto::new).toList();
+                                .stream().map(BookingDto::new).toList();
     }
 
 

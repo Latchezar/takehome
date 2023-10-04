@@ -20,7 +20,7 @@ public class HotelDto {
         this.id = hotel.getId();
         this.name = hotel.getName();
         this.rooms = hotel.getRooms().stream()
-                .map(RoomDto::new).toList();
+                          .map(RoomDto::new).toList();
         this.createdAt = hotel.getCreatedAt();
     }
 }

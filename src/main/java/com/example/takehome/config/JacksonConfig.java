@@ -19,27 +19,22 @@ import java.time.format.DateTimeFormatter;
 
 @Configuration
 public class JacksonConfig {
-    private final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-    private final DateTimeFormatter dateTimeFormatter =  DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
+    public static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+    public static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
 
     @Bean
     public Jackson2ObjectMapperBuilderCustomizer jackson2ObjectMapperBuilderCustomizer() {
 
         return builder -> {
-
-            // formatter
-            DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-            DateTimeFormatter dateTimeFormatter =  DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
-
             builder.simpleDateFormat("dd-MM-yyyy HH:mm");
 
             // deserializers
-            builder.deserializers(new LocalDateDeserializer(dateFormatter));
-            builder.deserializers(new LocalDateTimeDeserializer(dateTimeFormatter));
+            builder.deserializers(new LocalDateDeserializer(DATE_FORMATTER));
+            builder.deserializers(new LocalDateTimeDeserializer(DATE_TIME_FORMATTER));
 
             // serializers
-            builder.serializers(new LocalDateSerializer(dateFormatter));
-            builder.serializers(new LocalDateTimeSerializer(dateTimeFormatter));
+            builder.serializers(new LocalDateSerializer(DATE_FORMATTER));
+            builder.serializers(new LocalDateTimeSerializer(DATE_TIME_FORMATTER));
         };
     }
 
@@ -51,10 +46,10 @@ public class JacksonConfig {
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
         objectMapper.registerModule(new JavaTimeModule()
-                                            .addDeserializer(LocalDate.class, new LocalDateDeserializer(dateFormatter))
-                                            .addDeserializer(LocalDateTime.class, new LocalDateTimeDeserializer(dateTimeFormatter))
-                                            .addSerializer(LocalDate.class, new LocalDateSerializer(dateFormatter))
-                                            .addSerializer(LocalDateTime.class, new LocalDateTimeSerializer(dateTimeFormatter)));
+                                            .addDeserializer(LocalDate.class, new LocalDateDeserializer(DATE_FORMATTER))
+                                            .addDeserializer(LocalDateTime.class, new LocalDateTimeDeserializer(DATE_TIME_FORMATTER))
+                                            .addSerializer(LocalDate.class, new LocalDateSerializer(DATE_FORMATTER))
+                                            .addSerializer(LocalDateTime.class, new LocalDateTimeSerializer(DATE_TIME_FORMATTER)));
 
 
         return objectMapper;

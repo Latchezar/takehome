@@ -45,7 +45,8 @@ public class BookingAsyncService {
     }
 
     private boolean isRoomAvailable(Map<Long, Map<Long, Map<LocalDate, Integer>>> availability,
-                                    Long hotelId, Long roomId) {
+                                    Long hotelId,
+                                    Long roomId) {
         if (!availability.containsKey(hotelId)) {
             return false;
         }

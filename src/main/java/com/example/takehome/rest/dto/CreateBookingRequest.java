@@ -12,7 +12,8 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @Builder
-@NoArgsConstructor@AllArgsConstructor
+@NoArgsConstructor
+@AllArgsConstructor
 public class CreateBookingRequest {
     @NotNull(message = "Booking requires a hotel")
     private Long hotelId;

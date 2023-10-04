@@ -9,5 +9,6 @@ import org.springframework.stereotype.Repository;
 public interface RoomRepository extends JpaRepository<Room, Long> {
 
     @Query("select case when count(r) > 0 then true else false end from Room r where r.hotel.id = :hotelId and r.details = :details")
-    boolean existsByHotelIdAndDetails(Long hotelId, String details);
+    boolean existsByHotelIdAndDetails(Long hotelId,
+                                      String details);
 }

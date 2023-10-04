@@ -1,5 +1,8 @@
 package com.example.takehome.exceptions;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolationException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
@@ -13,9 +16,6 @@ import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.validation.ConstraintViolation;
-import jakarta.validation.ConstraintViolationException;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -39,7 +39,7 @@ public class GlobalControllerExceptionHandler {
                                                        ServiceException e) {
         logException(req.getRequestURI(), e.getClass().getSimpleName(), e);
         ErrorDetails errorDetails = getErrorDetails(e);
-        return ResponseEntity.badRequest().body(errorDetails);
+        return ResponseEntity.status(e.getError().getStatus().value()).body(errorDetails);
     }
 
     @ExceptionHandler( {MethodArgumentNotValidException.class})
@@ -68,7 +68,7 @@ public class GlobalControllerExceptionHandler {
     public ResponseEntity<ErrorDetails> handleAccessDeniedException(HttpServletRequest req,
                                                                     Exception exception) {
         logException(req.getRequestURI(), exception.getClass().getSimpleName(), exception);
-        return new ResponseEntity<>(new ErrorDetails("Access denied"), HttpStatus.FORBIDDEN);
+        return new ResponseEntity<>(new ErrorDetails(10403, "Access denied"), HttpStatus.FORBIDDEN);
     }
 
     @ExceptionHandler( {IllegalArgumentException.class, MissingServletRequestParameterException.class})
@@ -76,7 +76,7 @@ public class GlobalControllerExceptionHandler {
                                                                        Exception exception) {
         logException(req.getRequestURI(), exception.getClass().getSimpleName(),
                      exception);
-        return new ResponseEntity<>(new ErrorDetails("Bad request: " + exception.getMessage()),
+        return new ResponseEntity<>(new ErrorDetails(10400, "Bad request: " + exception.getMessage()),
                                     HttpStatus.BAD_REQUEST);
     }
 
@@ -104,23 +104,11 @@ public class GlobalControllerExceptionHandler {
     private void logException(String requestURI,
                               String simpleName,
                               Exception exception) {
-        log.error("Request '{}' raised {}", requestURI, simpleName,
-                  exception);
+        log.error("Request '{}' raised {}. {}", requestURI, simpleName, exception.getMessage());
     }
 
     private ErrorDetails getErrorDetails(ServiceException e) {
-        if (!e.isIgnorable()) {
-            log.error("", e);
-        }
-        ErrorDetails errorDetails = new ErrorDetails();
-        if (e.getError() != null) {
-            errorDetails.setErrorCode(e.getError().getCode());
-        }
-        if (e.getLocalizedMessage().isBlank()) {
-            errorDetails.setDescription(e.getLocalizedMessage());
-        }
-
-        return errorDetails;
+        return new ErrorDetails(e.getError().getCode(), e.getError().getDescription());
     }
 
 }

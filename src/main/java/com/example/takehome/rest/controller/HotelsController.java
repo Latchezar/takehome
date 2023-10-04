@@ -27,7 +27,8 @@ public class HotelsController {
     }
 
     @PostMapping("/{id}/add-room")
-    public HotelDto addRoom(@PathVariable Long id, @RequestBody CreateRoomRequest createRoomRequest) {
+    public HotelDto addRoom(@PathVariable Long id,
+                            @RequestBody CreateRoomRequest createRoomRequest) {
         return hotelService.addRoom(id, createRoomRequest);
     }
 
